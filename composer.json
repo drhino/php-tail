@@ -1,0 +1,20 @@
+{
+    "name": "drhino/php-tail",
+    "type": "library",
+    "description": "PHP version of `tail -F -n 0`",
+    "keywords": [],
+    "homepage": "https://github.com/drhino/php-tail",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "drhino\\Tail\\": "Tail\\"
+        }
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "vimeo/psalm": "^5.9",
+        "phpunit/phpunit": "^9.6"
+    }
+}
