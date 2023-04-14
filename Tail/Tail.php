@@ -39,6 +39,7 @@ class Tail
      */
     public function __construct(private string $path)
     {
+        // required! `new Tail(0)` fails here
         if (empty($this->path)) {
             throw new InvalidArgumentException('Path cannot be empty');
         }
