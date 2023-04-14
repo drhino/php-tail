@@ -19,6 +19,7 @@ use function fclose;
 use function fpassthru;
 use function connection_status;
 use function ob_end_flush;
+use function flush;
 
 /**
  * Follows the end of a file and emits new lines as they are added.
@@ -27,7 +28,6 @@ class Tail
 {
     /** @var ?resource|closed-resource */
     private $filehandle;
-    private string $path;
     private string $realpath = '';
     private int $path_inode = -1;
     private int $realpath_inode = -1;
@@ -37,13 +37,11 @@ class Tail
      * 
      * @throws InvalidArgumentException
      */
-    public function __construct(string $path)
+    public function __construct(private string $path)
     {
-        if (empty($path)) {
+        if (empty($this->path)) {
             throw new InvalidArgumentException('Path cannot be empty');
         }
-
-        $this->path = $path;
     }
 
     /**
@@ -80,6 +78,8 @@ class Tail
                     if (fpassthru($filehandle) !== ($size - $position)) {
                         throw new TailException('Unable to passthru stream of file: ' . $this->realpath);
                     }
+
+                    flush();
                 }
             } else {
                 $this->close();
