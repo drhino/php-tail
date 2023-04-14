@@ -17,7 +17,6 @@ use function fseek;
 use function ftell;
 use function fclose;
 use function fpassthru;
-use function is_resource;
 use function connection_status;
 use function ob_end_flush;
 
@@ -98,7 +97,7 @@ class Tail
      */
     public function close(): void
     {
-        if (is_resource($this->filehandle)) {
+        if (isset($this->filehandle)) {
             # echo '---CLOSE' . PHP_EOL;
             fclose($this->filehandle);
         }
