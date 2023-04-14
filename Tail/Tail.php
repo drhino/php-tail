@@ -97,12 +97,13 @@ class Tail
      */
     public function close(): void
     {
+        /** @var ?resource $this->filehandle */
         if (isset($this->filehandle)) {
             # echo '---CLOSE' . PHP_EOL;
             fclose($this->filehandle);
+            $this->filehandle = null;
         }
 
-        $this->filehandle = null;
         $this->realpath = '';
         $this->path_inode = -1;
         $this->realpath_inode = -1;
