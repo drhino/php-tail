@@ -1,33 +1,29 @@
-// For format details, see https://containers.dev/implementors/json_reference/. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/main/containers/ubuntu
+// For format details, see https://containers.dev/implementors/json_reference/
 {
-	"name": "Ubuntu",
 	"build": {
 		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick an Ubuntu version: jammy / ubuntu-22.04, focal / ubuntu-20.04, bionic /ubuntu-18.04
-		// Use ubuntu-22.04 or ubuntu-18.04 on local arm64/Apple Silicon.
-		"args": { "VARIANT": "ubuntu" }
+		// https://github.com/microsoft/vscode-dev-containers/tree/main/containers/php
+		// https://www.php.net/supported-versions.php
+		"args": { "VARIANT": "8.0" }
 	},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	// Use 'forwardPorts' to make a list of ports inside the container available locally
+	"forwardPorts": [8080],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
-	"postCreateCommand": "composer install",
+	// Use 'postCreateCommand' to run commands after the container is created
+	"postCreateCommand": "/bin/bash .devcontainer/postCreateCommand.sh",
 
-	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root
 	"remoteUser": "vscode",
-	"features": {
-		//"git": "os-provided"
-	},
 
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"eserozvataf.one-dark-pro-monokai-darker",
-				"xdebug.php-debug"
-			]
+				"eserozvataf.one-dark-pro-monokai-darker"
+			],
+			"settings": {
+				"php.validate.executablePath": "/usr/local/bin/php"
+			}
 		}
 	}
 }

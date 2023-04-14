@@ -11,10 +11,9 @@
         }
     },
     "require": {
-        "php": ">=7.4"
+        "php": ">=8.0"
     },
     "require-dev": {
-        "vimeo/psalm": "^5.9",
-        "phpunit/phpunit": "^9.6"
+        "vimeo/psalm": "^5.9"
     }
 }
