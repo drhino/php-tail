@@ -10,9 +10,6 @@
 >
     <projectFiles>
         <directory name="Tail" />
-        <directory name="tests" />
-        <ignoreFiles>
-            <directory name="vendor" />
-        </ignoreFiles>
+        <directory name="example" />
     </projectFiles>
 </psalm>

@@ -8,3 +8,4 @@ sudo ln -s /workspaces/php-tail/example /var/www/html
 
 sudo apache2ctl start
 
+# php /workspaces/php-tail/example/write-test.log.php &

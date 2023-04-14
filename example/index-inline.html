@@ -1,0 +1,44 @@
+Stream output:
+
+<pre id="viewer"></pre>
+
+<script type="module">
+
+    import { HttpStream } from './src/HttpStream.js'
+
+    const handler = new HttpStream
+    const viewer = document.getElementById('viewer')
+    const buffers = ['', '', '']
+
+    // Close the connection by executing `close()` in your console
+    window.close = () => handler.close()
+
+    handler.onbuffer = async(buffer) => {
+
+        buffers.shift()
+        buffers.push(String.fromCharCode(...buffer))
+        viewer.innerText = buffers.join('')
+
+        /*
+        buffer = new TextDecoder().decode(buffer)
+
+        // Prints each line to the console
+        for (const line of buffer.trim().split(/\r?\n/)) {
+            console.log(line)
+        }
+
+        // Adds the buffer to the view
+        document.getElementById('viewer').innerText += buffer
+
+        // Scroll to the bottom of the window
+        window.scrollTo(0, document.body.scrollHeight)
+        */
+    }
+
+    handler.onerror = error => {
+        console.error('MyError:', error)
+    }
+
+    handler.stream('server.php')
+
+</script>

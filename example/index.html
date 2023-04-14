@@ -1,0 +1,14 @@
+Stream output:
+
+<pre id="viewer"></pre>
+
+<script type="module">
+
+    import HttpStreamViewer from './src/HttpStreamViewer.js';
+
+    const handler = new HttpStreamViewer('server.php');
+
+    // Close the connection by executing `close()` in your console
+    window.close = () => handler.close()
+
+</script>
