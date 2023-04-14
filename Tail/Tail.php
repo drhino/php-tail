@@ -86,9 +86,6 @@ class Tail
                 $this->close();
             }
 
-            // Keep alive
-            echo "\n";
-
             // Avoids high CPU usage
             usleep(500000);
         }
