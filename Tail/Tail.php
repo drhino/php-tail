@@ -2,7 +2,6 @@
 
 namespace drhino\Tail;
 
-use Throwable;
 use InvalidArgumentException;
 
 use const SEEK_END;
@@ -20,7 +19,6 @@ use function fclose;
 use function fpassthru;
 use function is_resource;
 use function connection_status;
-use function ignore_user_abort;
 use function ob_end_flush;
 
 /**
@@ -58,51 +56,42 @@ class Tail
      */
     public function stream(): void
     {
-        ignore_user_abort(true);
-
         // Disables output_buffering
         while (@ob_end_flush());
 
-        try {
-            while (connection_status() === CONNECTION_NORMAL) {
-                if ($this->filehandle()) {
-                    /** @var resource */
-                    $filehandle = $this->filehandle;
+        while (connection_status() === CONNECTION_NORMAL) {
+            if ($this->filehandle()) {
+                /** @var resource */
+                $filehandle = $this->filehandle;
 
-                    if (($size = filesize($this->realpath)) === false) {
-                        throw new TailException('Unable to retrieve size of file: ' . $this->realpath);
-                    }
-
-                    if (($position = ftell($filehandle)) === false) {
-                        throw new TailException('Unable to get position of file: ' . $this->realpath);
-                    }
-
-                    if ($size < $position) {
-                        // The file was truncated
-                        $this->close();
-                    }
-                    elseif ($size > $position) {
-                        // Emits new data
-                        if (fpassthru($filehandle) !== ($size - $position)) {
-                            throw new TailException('Unable to passthru stream of file: ' . $this->realpath);
-                        }
-                    }
-                } else {
-                    $this->close();
+                if (($size = filesize($this->realpath)) === false) {
+                    throw new TailException('Unable to retrieve size of file: ' . $this->realpath);
                 }
 
-                // Keep alive
-                echo "\n";
+                if (($position = ftell($filehandle)) === false) {
+                    throw new TailException('Unable to get position of file: ' . $this->realpath);
+                }
 
-                // Avoids high CPU usage
-                usleep(500000);
+                if ($size < $position) {
+                    // The file was truncated
+                    $this->close();
+                }
+                elseif ($size > $position) {
+                    // Emits new data
+                    if (fpassthru($filehandle) !== ($size - $position)) {
+                        throw new TailException('Unable to passthru stream of file: ' . $this->realpath);
+                    }
+                }
+            } else {
+                $this->close();
             }
-        } catch (Throwable $e) {
-            $this->close();
-            throw $e;
-        }
 
-        $this->close();
+            // Keep alive
+            echo "\n";
+
+            // Avoids high CPU usage
+            usleep(500000);
+        }
     }
 
     /**
@@ -110,7 +99,7 @@ class Tail
      *
      * @return void
      */
-    private function close(): void
+    public function close(): void
     {
         if (is_resource($this->filehandle)) {
             # echo '---CLOSE' . PHP_EOL;
